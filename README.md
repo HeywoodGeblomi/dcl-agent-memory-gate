@@ -1,34 +1,37 @@
-# DCL Agent Memory Gate
+# dcl-agent-memory-gate
 
-Weekend wiring. Not production. Not a LangGraph drop-in.
+Weekend wiring. Dual Residual gate + DCL hidden χ on a toy memory loop.
 
-Proof-of-concept harness: a naive overwrite memory vs the same loop with Dual Residual evidence + Dynamic Commitment Layer (χ) + a sublation rewrite on flip.
+Not a filed title. Not LangGraph. Not production.
 
 ## Run
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install numpy
+pip install -r requirements.txt
 python demo.py
 ```
 
-Seed 0 / T=120 expected:
-- baseline final residual ≈ 0.3350
-- gated final χ = 1 after one flip
-- λ ≈ 0.380
+Needs numpy. One file, one command.
+
+## What you should see
+
+- Baseline: last visible residual only. Overwrites every step.
+- Gated: Dual Residual must confirm before DCL may flip χ.
+- Frozen: same gate, χ forced to 0. Ablation.
+
+Seed 0 / T=120 is the locked print. If your numbers match the scoreboard in the latest run, the wiring is intact.
 
 ## Files
 
-- `memory_baseline.py` — overwrites on every observation (drifts).
-- `memory_gated.py` — DCL step + sublation rewrite when χ flips.
-- `dual_residual.py` — Python port of the locked C++ oracle (thresholds 0.04 / 0.005).
-- `dcl.py` — hard DCL port.
-- `demo.py` — parity-trap scenario.
+| file | job |
+|---|---|
+| `dual_residual.py` | Python port of the public Dual Residual oracle. Thresholds locked. |
+| `dcl.py` | Hard DCL step + commit. |
+| `memory_baseline.py` | Overwrite store. |
+| `memory_gated.py` | Confirm then commit. |
+| `demo.py` | Parity-trap + freeze ablation. |
+| `NON_CLAIMS.md` | Honesty file. Wins on conflict. |
 
-## Honest limits
+Public primitive: https://github.com/HeywoodGeblomi/dual-residual
 
-- Dual residual is *computed and logged*. It does **not** currently hard-block `dcl_step`.
-- This is a 120-step toy loop, not MemGPT / Zep / LangGraph instrumentation.
-- Public sibling: https://github.com/HeywoodGeblomi/dual-residual
-- Kitchen DCL / residual-sublation / reconstruction-gate stay private. Do not treat those as public links.
+DCL kitchen stays private. This repo does not grant it.
