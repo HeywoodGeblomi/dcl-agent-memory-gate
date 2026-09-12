@@ -11,15 +11,20 @@ pip install -r requirements.txt
 python demo.py
 ```
 
-Needs numpy. One file, one command.
+Needs numpy. Optional: `python demo.py --scenario residual_confirm` (or `parity_trap`).
 
 ## What you should see
+
+Two scenarios, same three agents (baseline / gated / frozen-χ ablation):
+
+1. **parity_trap** (seed 0, T=120, flips at 30/55/80/105) — Dual Residual confirms 0/120. Gate refuses; χ stays 0. Shows the refuse path.
+2. **residual_confirm** — `noisy_ramp_confirmed` from the public dual-residual borderline suite (seed 42, amp 15, T=256). Dual Residual confirms on real 64-step windows; gated χ moves; frozen χ stays 0.
 
 - Baseline: last visible residual only. Overwrites every step.
 - Gated: Dual Residual must confirm before DCL may flip χ.
 - Frozen: same gate, χ forced to 0. Ablation.
 
-Seed 0 / T=120 is the locked print. If your numbers match the scoreboard in the latest run, the wiring is intact.
+Do not invent numbers. Run `python demo.py` and read the printed SCOREBOARD lines.
 
 ## Files
 
@@ -29,7 +34,7 @@ Seed 0 / T=120 is the locked print. If your numbers match the scoreboard in the 
 | `dcl.py` | Hard DCL step + commit. |
 | `memory_baseline.py` | Overwrite store. |
 | `memory_gated.py` | Confirm then commit. |
-| `demo.py` | Parity-trap + freeze ablation. |
+| `demo.py` | Parity-trap + residual-confirm + freeze ablation. |
 | `NON_CLAIMS.md` | Honesty file. Wins on conflict. |
 
 Public primitive: https://github.com/HeywoodGeblomi/dual-residual
