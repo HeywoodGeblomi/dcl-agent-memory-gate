@@ -26,14 +26,17 @@ Two scenarios, same three agents (baseline / gated / frozen-χ ablation):
 
 Do not invent numbers. Run `python demo.py` and read the printed SCOREBOARD lines.
 
+Read path (compose-beside): `GatedMemory.read` calls `rg_reconstruct` on the last `(r_fresh, k_fresh, r_corr)` for that key. Verdict does not flip DCL χ. Write path unchanged. RG pin stays header-only.
+
 ## Files
 
 | file | job |
 |---|---|
 | `dual_residual.py` | Python port of the public Dual Residual oracle. Thresholds locked. |
 | `dcl.py` | Hard DCL step + commit. |
+| `rg.py` | AMG-local port of `rg_reconstruct`. Read path only. |
 | `memory_baseline.py` | Overwrite store. |
-| `memory_gated.py` | Confirm then commit. |
+| `memory_gated.py` | Confirm then commit. Read path calls `rg_reconstruct` beside DCL χ. |
 | `demo.py` | Parity-trap + residual-confirm + freeze ablation. |
 | `NON_CLAIMS.md` | Honesty file. Wins on conflict. |
 
